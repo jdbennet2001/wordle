@@ -2,9 +2,12 @@
 
 const WORD_LENGTH = 5
 const MAX_WORDS = 6;
-const ENTER_KEY = 13;
-const BACKSPACE = 8;
 
+const ENTER_KEY = 13;
+const UNICODE_ENTER = 9094
+
+const BACKSPACE = 8;
+const UNICODE_BACKSPACE = 9003
 
 const VALID_CHARS = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -86,14 +89,16 @@ function addTiles(row, obj){
 
 function addKeyboard(board){
 
-    let rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+    let rows = [ ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'], ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'], ['⎆', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '⌫']]
 
     let $keyboard = $("<div>", {"class": `keyboard`,});
-    rows.forEach(row =>{
+    rows.forEach(letters =>{
         $row = $('<div>', {'class' : 'keyboard-row'})
-        let letters = row.split('')
         letters.forEach(letter =>{
             let $rune = $("<div>", {"class": `keyboard-letter`, text: letter});
+            $rune.click(() =>{
+                handleKey(letter.charCodeAt(0));
+            })
             $($row).append($rune)
         })
         $($keyboard).append($row)
@@ -131,6 +136,11 @@ init();
 
 $( 'body').keydown( event => {
     let keycode = event.keyCode;
+    handleKey(keycode)
+});
+
+function handleKey(keycode){
+
     let key = String.fromCharCode(keycode).toLowerCase();
 
     let active_guess = guesses[guess];
@@ -141,7 +151,7 @@ $( 'body').keydown( event => {
         guesses[guess] = active_guess + key;
     }
 
-    if ( keycode == ENTER_KEY && complete_word ){
+    if ( (keycode == ENTER_KEY || keycode == UNICODE_ENTER) && complete_word ){
 
         // Submit word
         if ( guess < MAX_WORDS && _.includes(words, active_guess) ){
@@ -152,7 +162,6 @@ $( 'body').keydown( event => {
             popup_msg = 'Not a word'
          }
 
-
         if (guess == MAX_WORDS && active_guess == objective){
             popup_msg = 'Right!'
         }
@@ -160,16 +169,13 @@ $( 'body').keydown( event => {
         if (guess == MAX_WORDS && active_guess != objective){
             popup_msg = objective
         }
-
-
     }
 
     // Backspace
-    if (keycode == BACKSPACE && !_.isEmpty(active_guess)){
+    if ((keycode == BACKSPACE || keycode == UNICODE_BACKSPACE) && !_.isEmpty(active_guess)){
         guesses[guess] = active_guess.slice(0, -1)
     }
 
     renderBoard();
 
-    console.log( key );
-});
+}
