@@ -1,0 +1,120 @@
+body,
+html {
+  background-color: #333;
+  margin: 0px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#container {
+  font-size: 30px;
+}
+
+#restart {
+  padding-top: 10px;
+  display: none;
+}
+
+#restart:hover .restart-letter{
+  border: 2px solid #565758;
+}
+
+.restart-letter {
+  background: #121213;
+  border: 0px solid #565758;
+  color: #d7dadc;
+  font-family: "Clear Sans", Sans-Serif;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.board{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: center;
+}
+
+.row{
+    border: 1px white;
+    /* background-color: seashell; */
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: center;
+        
+}
+
+.tile{
+    border: 1px solid gainsboro;
+    height: 35px;
+    width: 35px;
+    flex: 0 0 auto;
+    align-self: auto;
+    margin: 10px;
+
+    font-size: 30px;
+    color: white;
+    text-align: center;
+}
+
+.green{
+    background-color: seagreen;
+}
+
+.yellow{
+    background-color: #c9b458;
+}
+
+.keyboard{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: center;
+}
+
+.keyboard-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: center;
+}
+
+.keyboard-letter{
+    flex: 0 1 auto;
+    align-self: auto;
+    flex: 0 1 auto;
+    align-self: auto;
+    font-size: 30px;
+    background-color: lightgray;
+    margin: 5px;
+    border-radius: 2px;
+    width: 20px;
+    text-align: center;
+    line-height: 30px;
+}
+
