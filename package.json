@@ -1,0 +1,22 @@
+{
+  "name": "wordle",
+  "version": "1.0.0",
+  "description": "A simple wordle clone, useful for testing kubernetes / docker deployments",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdbennet2001/wordle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdbennet2001/wordle/issues"
+  },
+  "homepage": "https://github.com/jdbennet2001/wordle#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
