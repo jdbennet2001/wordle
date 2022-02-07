@@ -12,13 +12,15 @@ let words = []
 let guesses = ['', '', '', '', '', '']
 let guess = 0;
 let objective = ''
+let popup_msg = ''
 
 // Init the program
 async function init(){
     let response = await fetch('words.json');
     words = await response.json();
-    // objective = _.sample(words);
-    objective = 'clone'
+    objective = _.sample(words);
+    console.log( objective )
+    // objective = 'clone'
     
     await renderBoard();
 }
@@ -28,6 +30,10 @@ async function renderBoard(){
     
     // Clear the board
     await $('.board').empty();
+
+    await addTitle(board)
+
+    await addStatus(board)
     
     // Add rows
     await addRows(board)
@@ -38,7 +44,20 @@ async function renderBoard(){
     });
 
     await addKeyboard(board);
+
+    popup_msg = ''
     
+}
+
+async function addTitle(board){
+    var $row = await $("<div>", {"class": "title", text: 'Wordle'});
+    board.append($row);
+}
+
+async function addStatus(board){
+    let visbility = _.isEmpty(popup_msg) ? 'hidden' : 'visible'
+    var $row = await $("<div>", {"class": `status ${visbility}`, text: popup_msg});
+    board.append($row);
 }
 
 
@@ -100,7 +119,7 @@ function getColor(row, column){
         color = 'green'
     }
     else if (text && _.includes(objective, text)){
-        accuracy = 'yellow'
+        color = 'yellow'
     }
      
     return color;
@@ -122,17 +141,33 @@ $( 'body').keydown( event => {
         guesses[guess] = active_guess + key;
     }
 
-    // Submit word
-    if ( keycode == ENTER_KEY && guess < MAX_WORDS && complete_word && _.includes(words, active_guess) ){
-        guess = guess + 1;
+    if ( keycode == ENTER_KEY && complete_word ){
+
+        // Submit word
+        if ( guess < MAX_WORDS && _.includes(words, active_guess) ){
+            guess = guess + 1;
+        }
+
+        if ( guess < MAX_WORDS &&  !_.includes(words, active_guess) ){
+            popup_msg = 'Not a word'
+         }
+
+
+        if (guess == MAX_WORDS && active_guess == objective){
+            popup_msg = 'Right!'
+        }
+
+        if (guess == MAX_WORDS && active_guess != objective){
+            popup_msg = objective
+        }
+
+
     }
 
     // Backspace
     if (keycode == BACKSPACE && !_.isEmpty(active_guess)){
         guesses[guess] = active_guess.slice(0, -1)
     }
-
-
 
     renderBoard();
 
