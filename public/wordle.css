@@ -20,6 +20,9 @@ body {
     margin: 10px;
 }
 
+/*Default */
+html { font-size: 200%; }
+
 /* iPhone */
 @media only screen 
   and (min-device-width: 320px) 
@@ -28,24 +31,26 @@ body {
     html { font-size: 200%; }
 }
 
-/* iPad */
-@media only screen 
-  and (min-device-width: 768px) 
- 
-  and (-webkit-min-device-pixel-ratio: 1) {
+/* iPad Air 3+ */
+@media all 
+and (device-width: 834px) 
+and (device-height: 1112px) 
+and (orientation:landscape) {
     html { font-size: 300%; }
 }
+
+
 
 
 
 .status{
     background-color: ghostwhite;
     color: black;
-    /* font-size: 25px; */
     padding: 10px 25px;
     border-radius: 5px;
-    max-height: 35px;
-    height: 35px;   
+    max-height: 1.25em;
+    height: 1.25em;
+    margin: 0.25em 0;
 }
 
 .status.hidden{
@@ -115,6 +120,8 @@ body {
     align-items: center;
 }
 
+
+
 .keyboard-letter{
     flex: 0 1 auto;
     align-self: auto;
@@ -123,11 +130,22 @@ body {
     /* font-size: 30px; */
     background-color: lightgray;
     margin: 5px;
-    border-radius: 2px;
-    min-width: 20px;
+    border-radius: 5px;
+    min-width: 0.75em;
     text-align: center;
     line-height: 1.25em;
     padding-left: 5px;
     padding-right: 5px;
 }
 
+.keyboard-letter.used{
+    background-color: grey;
+}
+
+.keyboard-letter.yellow{
+    background-color: #c9b458;
+}
+
+.keyboard-letter.green{
+    background-color: seagreen;
+}

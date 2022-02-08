@@ -12,6 +12,7 @@ const UNICODE_BACKSPACE = 9003
 const VALID_CHARS = 'abcdefghijklmnopqrstuvwxyz';
 
 let words = []
+let valid = [] 
 let guesses = ['', '', '', '', '', '']
 let guess = 0;
 let objective = ''
@@ -19,9 +20,20 @@ let popup_msg = ''
 
 // Init the program
 async function init(){
-    let response = await fetch('words.json');
-    words = await response.json();
+    if ( _.isEmpty(words) ){
+        let wordTokens = await fetch('words.json');
+        words = await wordTokens.json();
+
+        let validTokens = await fetch('valid.json')
+        let tokens  = await validTokens.json();
+        valid = _.concat( tokens, words )
+    }
+
     objective = _.sample(words);
+    guesses = ['', '', '', '', '', '']
+    guess = 0;
+    popup_msg = ''
+
     console.log( objective )
     // objective = 'clone'
     
@@ -54,6 +66,11 @@ async function renderBoard(){
 
 async function addTitle(board){
     var $row = await $("<div>", {"class": "title", text: 'Wordle'});
+
+    // Clicking on the title resets the app...
+    $row.click( () => {
+       init()
+    })
     board.append($row);
 }
 
@@ -81,7 +98,7 @@ function addTiles(row, obj){
         let color = getColor(row, column);
 
 
-        let $div = $("<div>", {"class": `tile ${color}`, text});
+        let $div = $("<div>", {"class": `tile ${color} ${text}`, text});
         $div.click(function(){ /* ... */ });
         $(obj).append($div);
     }
@@ -89,13 +106,27 @@ function addTiles(row, obj){
 
 function addKeyboard(board){
 
+    let charset = ''
+    for ( let i = 0; i < guess; i++){
+        charset += guesses[i]
+    }
+
     let rows = [ ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'], ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'], ['⎆', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '⌫']]
 
     let $keyboard = $("<div>", {"class": `keyboard`,});
     rows.forEach(letters =>{
         $row = $('<div>', {'class' : 'keyboard-row'})
         letters.forEach(letter =>{
-            let $rune = $("<div>", {"class": `keyboard-letter`, text: letter});
+
+            let used = "free"
+            if ( $(`.${letter}.green`).length )
+                used = 'green'
+            else if ( $(`.${letter}.yellow`).length )
+                used = 'yellow'
+            else if ( $(`.${letter}.default`).length )
+                used = 'used'
+
+            let $rune = $("<div>", {"class": `keyboard-letter ${used}`, text: letter});
             $rune.click(() =>{
                 handleKey(letter.charCodeAt(0));
             })
@@ -154,11 +185,11 @@ function handleKey(keycode){
     if ( (keycode == ENTER_KEY || keycode == UNICODE_ENTER) && complete_word ){
 
         // Submit word
-        if ( guess < MAX_WORDS && _.includes(words, active_guess) ){
+        if ( guess < MAX_WORDS && _.includes(valid, active_guess) ){
             guess = guess + 1;
         }
 
-        if ( guess < MAX_WORDS &&  !_.includes(words, active_guess) ){
+        if ( guess < MAX_WORDS &&  !_.includes(valid, active_guess) ){
             popup_msg = 'Not a word'
          }
 
