@@ -33,7 +33,7 @@ html { font-size: 200%; }
 
 /* iPad Air 3+ */
 @media all 
-and (min-device-width: 820px) 
+and (device-width: 820px) 
 and (min-device-height: 1024px) 
 and (-webkit-min-device-pixel-ratio: 2)
  {
