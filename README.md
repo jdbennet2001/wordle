@@ -25,7 +25,7 @@ docker images purge
 ```
 kubectl apply -f wordle.yaml 
 kubectl get pods
-kubectl port-forward node-wordle... 3000:3000 
+kubectl port-forward service/wordle-service 3000:3080
 ```
 
 # App access
