@@ -22,9 +22,11 @@ docker container prune
 docker images purge
 
 # Kube
+```
 kubectl apply -f wordle.yaml 
 kubectl get pods
 kubectl port-forward node-wordle... 3000:3000 
+```
 
 # App access
 http://localhost:32222/
