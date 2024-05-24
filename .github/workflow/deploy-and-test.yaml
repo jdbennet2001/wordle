@@ -1,0 +1,17 @@
+name: Build, Test, and Deploy Docker Image
+
+# Allows manual triggering of the workflow
+on:
+  workflow_dispatch:
+
+jobs:
+  build-test-deploy:
+    name: Build, Test, and Deploy Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
