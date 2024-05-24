@@ -26,7 +26,7 @@ jobs:
         run: docker build -t jdbennet2001/node-wordle .
 
       - name: Run Docker container locally
-        run: docker run -d -p 8080:80 --name my-app-test my-app:latest
+        run: docker run -d -p 8080:80 --name wordle jdbennet2001/node-wordle:latest
 
       - name: Wait for the service to be up
         run: sleep 30 # Adjust the time as necessary for your service to be up and running
