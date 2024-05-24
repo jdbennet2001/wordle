@@ -24,3 +24,22 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t jdbennet2001/node-wordle .
+
+      - name: Run Docker container locally
+        run: docker run -d -p 8080:80 --name my-app-test my-app:latest
+
+      - name: Wait for the service to be up
+        run: sleep 30 # Adjust the time as necessary for your service to be up and running
+
+      - name: Test the web interface
+        run: |
+          RESPONSE=$(curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:3000)
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Health check failed with status code $RESPONSE"
+            exit 1
+          else
+            echo "Health check passed with status code $RESPONSE"
+          fi
+
+      - name: Stop and remove Docker container
+        run: docker rm -f wordle
