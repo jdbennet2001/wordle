@@ -21,3 +21,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_LOGIN_USER }}
           password: ${{ secrets.DOCKER_LOGIN_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t jdbennet2001/node-wordle .
