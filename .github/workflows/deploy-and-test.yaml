@@ -34,6 +34,9 @@ jobs:
       - name: Display Docker information
         run: docker ps
 
+      - name: Display curl information
+        run: curl http://localhost:3000
+
       - name: Test the web interface
         run: |
           RESPONSE=$(curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:3000)
