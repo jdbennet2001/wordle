@@ -31,6 +31,9 @@ jobs:
       - name: Wait for the service to be up
         run: sleep 30 # Adjust the time as necessary for your service to be up and running
 
+      - name: Display Docker information
+        run: docker ps
+
       - name: Test the web interface
         run: |
           RESPONSE=$(curl --write-out '%{http_code}' --silent --output /dev/null http://localhost:3000)
