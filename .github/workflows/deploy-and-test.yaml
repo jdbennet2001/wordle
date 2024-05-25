@@ -34,8 +34,6 @@ jobs:
       - name: Display Docker information
         run: docker ps
 
-      - name: Display curl information
-        run: curl http://localhost:3000
 
       - name: Test the web interface
         run: |
@@ -49,3 +47,9 @@ jobs:
 
       - name: Stop and remove Docker container
         run: docker rm -f wordle
+
+      - name: Tag Docker image
+        run: docker tag jdbennet2001/node-wordle:latest ${{ secrets.DOCKER_USERNAME }}/jdbennet2001/node-wordle:latest
+
+      - name: Push Docker image to DockerHub
+        run: docker push ${{ secrets.DOCKER_LOGIN_USER }}/jdbennet2001/node-wordle:latest
