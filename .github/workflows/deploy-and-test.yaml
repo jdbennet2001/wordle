@@ -53,7 +53,7 @@ jobs:
         run: echo "GIT_COMMIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Tag Docker image with SHA
-        run: docker tag jdbennet2001/node-wordle:latest jdbennet2001/node-wordle:${{"GIT_COMMIT_SHA}}
+        run: docker tag jdbennet2001/node-wordle:latest jdbennet2001/node-wordle:${{ GIT_COMMIT_SHA }}
 
       - name: Push Docker image to DockerHub
         run: docker push jdbennet2001/node-wordle:latest
