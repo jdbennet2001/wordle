@@ -48,8 +48,12 @@ jobs:
       - name: Stop and remove Docker container
         run: docker rm -f wordle
 
-      - name: Tag Docker image
-        run: docker tag jdbennet2001/node-wordle:latest ${{ secrets.DOCKER_USERNAME }}/jdbennet2001/node-wordle:latest
+      - name: Extract Git Commit SHA
+        id: vars
+        run: echo "GIT_COMMIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Tag Docker image with SHA
+        run: docker tag jdbennet2001/node-wordle:latest jdbennet2001/node-wordle:${{"GIT_COMMIT_SHA}}
 
       - name: Push Docker image to DockerHub
-        run: docker push ${{ secrets.DOCKER_LOGIN_USER }}/jdbennet2001/node-wordle:latest
+        run: docker push jdbennet2001/node-wordle:latest
