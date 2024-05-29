@@ -1,23 +1,14 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/jdbennet2001/node-wordle
-  pullPolicy: IfNotPresent
+  repository: ghcr.io/jdbennet2001/node-wordle:latest
   tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  name: ghcr-secret
 
 service:
-  type: NodePort
-  port: 3080
-  nodePort: 32222
+  type: ClusterIP
 
-env:
-  - name: SAMPLE
-    value: "50000"
-
-resources: {}
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+# Additional parameters if needed

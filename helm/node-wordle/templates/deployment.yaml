@@ -1,27 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-{{ .Chart.Name }}
+  name: wordle
   labels:
-    app: {{ .Chart.Name }}
+    app: wordle
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: wordle
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: wordle
     spec:
       containers:
-      - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        env:
-        {{- range .Values.env }}
-        - name: "{{ .name }}"
-          value: "{{ .value }}"
-        {{- end }}
+      - name: wordle
+        image: ghcr.io/jdbennet2001/node-wordle:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 80
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets.name }}

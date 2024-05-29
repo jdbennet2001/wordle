@@ -14,10 +14,12 @@ spec:
     spec:
       containers:
       - name: wordle
-        image: ghcr.io/jdbennet2001/node-wordle
+        image: ghcr.io/jdbennet2001/node-wordle:latest
         env:
         - name: "SAMPLE"
           value: "50000"
+      imagePullSecrets:
+      - name: ghcr-secret
 
 --- 
 
