@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: wordle
-        image: docker.io/jdbennet2001/node-wordle
+        image: ghcr.io/jdbennet2001/node-wordle
         env:
         - name: "SAMPLE"
           value: "50000"
