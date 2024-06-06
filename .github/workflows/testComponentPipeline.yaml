@@ -19,4 +19,4 @@ jobs:
     uses: jdbennet2001/wordle/.github/workflows/componentPipeline.yaml@main
     with:
       componentYAML: ${{ github.event.inputs.componentYAMLName }}
-      systemTest: false
+      systemTest: ${{ github.event.inputs.systemTest }}
