@@ -14,29 +14,9 @@ on:
         type: boolean
 
 jobs:
-  trigger-test:
-    runs-on: ubuntu-latest
 
-    steps:
-    - name: Trigger Component Pipeline Workflow
-      uses: actions/github-script@v6
-      with:
-        script: |
-          await github.rest.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: 'componentPipeline.yaml',
-            ref: context.ref,
-            inputs: {
-              componentYAMLName: '${{ github.event.inputs.componentYAMLName }}',
-              systemTest: '${{ github.event.inputs.systemTest }}'
-            }
-          })
-
-    - name: Check success
-      run: |
-        if [ "${{ steps.call-workflow.outputs.success }}" == "true" ]; then
-          echo "The component test was successful!"
-        else
-          echo "The component test failed."
-        fi
+  call-workflow-passing-data:
+    uses: jdbennet2001/wordle/.github/workflows/componentPipeline.yaml@main
+    with:
+      componentYAML: .github/labeler.yml
+      systemTest: false
