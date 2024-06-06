@@ -1,0 +1,40 @@
+name: Trigger Component Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      componentYAMLName:
+        description: 'Name of the component YAML'
+        required: true
+        default: 'default.yaml'
+      systemTest:
+        description: 'Run system test'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  trigger-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Call Component Test Workflow
+      id: call-workflow
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Component Test
+        repo: jdbennet2001/wordle
+        token: ${{ secrets.GITHUB_TOKEN }}
+        inputs: |
+          {
+            "componentYAMLName": "${{ github.event.inputs.componentYAMLName }}",
+            "systemTest": "${{ github.event.inputs.systemTest }}"
+          }
+
+    - name: Check success
+      run: |
+        if [ "${{ steps.call-workflow.outputs.success }}" == "true" ]; then
+          echo "The component test was successful!"
+        else
+          echo "The component test failed."
+        fi
