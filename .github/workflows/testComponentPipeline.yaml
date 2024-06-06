@@ -25,7 +25,7 @@ jobs:
           github.rest.actions.createWorkflowDispatch({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            workflow_id: 'sample-workflow.yml',
+            workflow_id: 'componentPipeline.yml',
             ref: context.ref,
             inputs: {
               componentYAMLName: '${{ github.event.inputs.componentYAMLName }}',
