@@ -6,7 +6,7 @@ on:
       componentYAMLName:
         description: 'Name of the component YAML'
         required: true
-        default: 'default.yaml'
+        default: 'component-trigger.yaml'
       systemTest:
         description: 'Run system test'
         required: true
