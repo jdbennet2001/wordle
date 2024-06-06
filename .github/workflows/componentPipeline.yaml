@@ -1,0 +1,46 @@
+name: Component Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      componentYAMLName:
+        description: 'Name of the component YAML'
+        required: true
+        default: 'default.yaml'
+      systemTest:
+        description: 'Run system test'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Display inputs
+      run: |
+        echo "Component YAML Name: ${{ github.event.inputs.componentYAMLName }}"
+        echo "System Test: ${{ github.event.inputs.systemTest }}"
+
+    - name: Run tests
+      id: run-tests
+      run: |
+        if [ "${{ github.event.inputs.systemTest }}" == "true" ]; then
+          echo "Running system tests..."
+          # Add your system test commands here
+          # Example: ./run-system-tests.sh
+        else
+          echo "Running component tests for ${{ github.event.inputs.componentYAMLName }}..."
+          # Add your component test commands here
+          # Example: ./run-component-tests.sh ${{ github.event.inputs.componentYAMLName }}
+        fi
+        # Set the success variable based on the test results
+        echo "success=true" >> $GITHUB_ENV
+
+    - name: Set success output
+      run: echo "success=${{ env.success }}"
+      id: set-output
