@@ -15,6 +15,18 @@ on:
 
 jobs:
 
+  initialTests:
+      runs-on: ubuntu-latest
+      
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Display inputs
+          run: |
+            echo "Component YAML Name: ${{ github.event.inputs.componentYAMLName }}"
+            echo "System Test: ${{ github.event.inputs.systemTest }}"
+
   call-workflow-passing-data:
     uses: jdbennet2001/wordle/.github/workflows/componentPipeline.yaml@main
     with:
