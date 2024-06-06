@@ -1,47 +1,53 @@
-name: Component Test
+name: Component Pipeline
 
 on:
+  workflow_dispatch:
+    inputs:
+      componentYAML:
+        description: 'Path to the component YAML file'
+        required: false
+        default: 'pipeline.yaml'
+      systemTest:
+        description: 'Run system tests'
+        required: false
+        default: true
+        type: boolean
   workflow_call:
     inputs:
-      componentYAMLName:
-        description: 'Name of the component YAML'
-        required: true
-        default: 'default.yaml'
-      systemTest:
-        description: 'Run system test'
+      componentYAML:
+        description: 'Path to the component YAML file'
         required: false
-        default: false
+        default: 'pipeline.yaml'
+        type: string
+      systemTest:
+        description: 'Run system tests'
+        required: false
+        default: true
         type: boolean
 
-
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Display inputs
-      run: |
-        echo "Component YAML Name: ${{ github.event.inputs.componentYAMLName }}"
-        echo "System Test: ${{ github.event.inputs.systemTest }}"
+      - name: Display inputs
+        run: |
+          echo "Component YAML Name: ${{ github.event.inputs.componentYAMLName }}"
+          echo "System Test: ${{ github.event.inputs.systemTest }}"
 
-    - name: Run tests
-      id: run-tests
-      run: |
-        if [ "${{ github.event.inputs.systemTest }}" == "true" ]; then
-          echo "Running system tests..."
-          # Add your system test commands here
-          # Example: ./run-system-tests.sh
-        else
-          echo "Running component tests for ${{ github.event.inputs.componentYAMLName }}..."
-          # Add your component test commands here
-          # Example: ./run-component-tests.sh ${{ github.event.inputs.componentYAMLName }}
-        fi
-        # Set the success variable based on the test results
-        echo "success=true" >> $GITHUB_ENV
 
-    - name: Set success output
-      run: echo "success=${{ env.success }}"
-      id: set-output
+      - name: Run Component Pipeline
+        run: |
+          echo "Using component YAML: ${{ inputs.componentYAML }}"
+          if [ "${{ inputs.systemTest }}" = true ]; then
+            echo "Running system tests"
+            # Add system test commands here
+          else
+            echo "Skipping system tests"
+          fi
+        env:
+          COMPONENT_YAML: ${{ inputs.componentYAML }}
+          SYSTEM_TEST: ${{ inputs.systemTest }}
