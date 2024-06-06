@@ -13,6 +13,19 @@ on:
         default: false
         type: boolean
 
+  workflow_call:
+    inputs:
+      componentYAMLName:
+        description: 'Name of the component YAML'
+        required: true
+        default: 'default.yaml'
+      systemTest:
+        description: 'Run system test'
+        required: false
+        default: false
+        type: boolean
+
+
 jobs:
   test:
     runs-on: ubuntu-latest

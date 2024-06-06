@@ -18,18 +18,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Call Component Test Workflow
-      id: call-workflow
-      uses: benc-uk/workflow-dispatch@v1
+    - name: Trigger Component Pipeline Workflow
+      uses: actions/github-script@v6
       with:
-        workflow: Component Test
-        repo: jdbennet2001/wordle
-        token: ${{ secrets.GITHUB_TOKEN }}
-        inputs: |
-          {
-            "componentYAMLName": "${{ github.event.inputs.componentYAMLName }}",
-            "systemTest": "${{ github.event.inputs.systemTest }}"
-          }
+        script: |
+          github.rest.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: 'sample-workflow.yml',
+            ref: context.ref,
+            inputs: {
+              componentYAMLName: '${{ github.event.inputs.componentYAMLName }}',
+              systemTest: '${{ github.event.inputs.systemTest }}'
+            }
+          })
 
     - name: Check success
       run: |
